@@ -36,13 +36,13 @@ class ArticleController extends FOSRestController
 
         return $article;
     }
-	
-	/**
+
+    /**
      * @Rest\Get("/articles/{slug}")
      */
     public function getArticleBySlugAction($slug)
     {
-        $article = $this->getDoctrine()->getRepository('AppBundle:Article')->findOneBy(array('slug' => $slug));
+        $article = $this->getDoctrine()->getRepository('AppBundle:Article')->findOneBy(['slug' => $slug]);
         if (!$article) {
             return new View('Artcile not found', Response::HTTP_NOT_FOUND);
         }
@@ -56,28 +56,28 @@ class ArticleController extends FOSRestController
     public function postArticleAction(Request $request)
     {
         $article = new Article();
-		
-		$title = $request->get('title');
+
+        $title = $request->get('title');
         $slug = $request->get('slug');
         $createdBy = $request->get('createdBy');
-		
-		if (!$title || !$slug || !$createdBy) {
-			return new View('Null values are not allowed', Response::HTTP_NOT_ACCEPTABLE);
-		}
 
-        $article->setTitle($request->get('title'));
+        if (!$title || !$slug || !$createdBy) {
+            return new View('Null values are not allowed', Response::HTTP_NOT_ACCEPTABLE);
+        }
+
+        $article->setTitle($title);
         $article->setLeadingArticle($request->get('leadingArticle'));
         $article->setBody($request->get('body'));
-        $article->setSlug($request->get('slug'));
-        $article->setCreatedBy($request->get('createdBy'));
+        $article->setSlug($slug);
+        $article->setCreatedBy($createdBy);
 
         $em = $this->getDoctrine()->getManager();
         $em->persist($article);
         $em->flush();
-		
-		if (!$article->getId()) {
-			return new View('Article has not been added', 400);
-		}
+
+        if (!$article->getId()) {
+            return new View('Article has not been added', 400);
+        }
 
         return new View('Article added Successfully', Response::HTTP_OK);
     }
@@ -87,7 +87,6 @@ class ArticleController extends FOSRestController
      */
     public function deleteArticleAction($id)
     {
-        $data = new Article();
         $em = $this->getDoctrine()->getManager();
         $article = $this->getDoctrine()->getRepository('AppBundle:Article')->find($id);
         if (empty($article)) {

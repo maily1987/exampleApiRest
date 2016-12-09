@@ -7,15 +7,13 @@ use FOS\RestBundle\Controller\Annotations as Rest;
 use FOS\RestBundle\Controller\FOSRestController;
 use FOS\RestBundle\View\View;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
-use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
 class ArticleV2Controller extends FOSRestController
 {
-   
     /**
      * @Rest\Get("/articles_v2/{article_id}", requirements= {"id": "\d+"})
-	 * @ParamConverter("article", options={"id" = "article_id"})
+     * @ParamConverter("article", options={"id" = "article_id"})
      */
     public function getArticleAction(Article $article)
     {
@@ -25,10 +23,10 @@ class ArticleV2Controller extends FOSRestController
 
         return $article;
     }
-	
-	/**
+
+    /**
      * @Rest\Get("/articles_v2/{artilce_slug}")
-	 * @ParamConverter("artilce", options={"mapping": {"artilce_slug": "slug"}})
+     * @ParamConverter("artilce", options={"mapping": {"artilce_slug": "slug"}})
      */
     public function getArticleBySlugAction(Article $artilce)
     {
@@ -38,5 +36,4 @@ class ArticleV2Controller extends FOSRestController
 
         return $artilce;
     }
-
 }
