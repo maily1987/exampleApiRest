@@ -1,0 +1,8 @@
+AppBundle\Entity\Article:
+    article_{1..10}:
+        title: <title()>
+        leadingArticle: <title()>
+        body: <title()>
+        createdAt: <datetime()>
+        slug: <slug()>
+        createdBy: <name()>

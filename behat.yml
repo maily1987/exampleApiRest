@@ -1,0 +1,39 @@
+default:
+  calls:
+    error_reporting: 16383 # E_ALL & ~E_USER_DREPRECATED
+  suites:
+    article:
+      contexts:
+        - ArticleContext: { doctrine: "@doctrine" }
+        - APIContext
+        - FeatureContext: { doctrine: "@doctrine" }
+        - OAuthContext: { doctrine: "@doctrine" }
+        - Behat\MinkExtension\Context\MinkContext
+        - Sanpi\Behatch\Context\RestContext
+        - Sanpi\Behatch\Context\JsonContext
+      filters:
+        tags: "@article"
+    post:
+      contexts:
+        - PostContext
+        - APIContext
+        - FeatureContext: { doctrine: "@doctrine" }
+        - OAuthContext: { doctrine: "@doctrine" }
+        - Behat\MinkExtension\Context\MinkContext
+        - Sanpi\Behatch\Context\RestContext
+        - Sanpi\Behatch\Context\JsonContext
+      filters:
+        tags: "@post"
+
+  extensions:
+    Behat\Symfony2Extension:
+      kernel:
+        env: "test"
+        debug: "true"
+    Behat\MinkExtension:
+      base_url: "http://localhost"
+      sessions:
+        default:
+          symfony2: ~
+    Sanpi\Behatch\Extension: ~
+    Gorghoa\ScenarioStateBehatExtension\ServiceContainer\ScenarioStateExtension: ~
